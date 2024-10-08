@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 
 class Prompt(BaseModel):
     question: str
@@ -38,6 +38,16 @@ tables: [
 class ModelResponse(BaseModel):
     tables: list[TableLookup]
 
+    @field_validator('tables')
+    @classmethod
+    def table_should_unique(self, v: list[TableLookup]) -> list[TableLookup]:
+        table_names = [table.name for table in v]
+
+        if len(table_names) != len(set(table_names)):
+            raise ValueError("Table names should be unique")
+
+        return v
+
 class Column(BaseModel):
     name: str
     type: str
@@ -47,23 +57,31 @@ class TableDefinition(BaseModel):
     columns: list[Column]
     relations: list[str]
 
+"""
+[
+    {
+        "name": "lectures",
+        "columns": [
+            {
+                "name": "id",
+                "type": "int"
+            },
+            {
+                "name": "nidn",
+                "type": "int"
+            },
+            {
+                "name": "name",
+                "type": "str"
+            }
+        ],
+        "relations": ["researches"],
+    }
+]
+"""
 class Tables(BaseModel):
     tables: list[TableDefinition]
 
-"""
-{
-    "message": "Success",
-    "data": {
-        "tables": [
-            {
-                "name": "lectures",
-                "columns": ["id", "nidn", "name"],
-                "relations": ["researches"],
-            }
-        ]
-    }
-}
-"""
-class Schema(BaseModel):
+class GenericResponse[T](BaseModel):
     message: str
-    data: Tables
+    data: T
