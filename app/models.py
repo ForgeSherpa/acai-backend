@@ -35,6 +35,8 @@ class Student(Base):
     graduation_year = Column(Integer)
     graduation_semester = Column(Integer)
 
+    activities = relationship("StudentActivity", back_populates="student")
+
 class StudentActivity(Base):
     __tablename__ = 'student_activities'
 
@@ -44,3 +46,5 @@ class StudentActivity(Base):
     name = Column(String)
     type = Column(String)
     date = Column(Date)
+
+    student = relationship("Student", back_populates="activities")
