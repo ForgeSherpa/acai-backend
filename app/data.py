@@ -38,9 +38,13 @@ tables: [
 class ModelResponse(BaseModel):
     tables: list[TableLookup]
 
+class Column(BaseModel):
+    name: str
+    type: str
+
 class TableDefinition(BaseModel):
     name: str
-    columns: list[str]
+    columns: list[Column]
     relations: list[str]
 
 class Tables(BaseModel):
