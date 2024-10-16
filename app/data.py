@@ -40,7 +40,7 @@ class ModelResponse(BaseModel):
 
     @field_validator('tables')
     @classmethod
-    def table_should_unique(self, v: list[TableLookup]) -> list[TableLookup]:
+    def table_should_unique(cls, v: list[TableLookup]) -> list[TableLookup]:
         table_names = [table.name for table in v]
 
         if len(table_names) != len(set(table_names)):
