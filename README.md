@@ -12,7 +12,11 @@ Bash:
 
 ```bash
 python -m venv .
-source bin/activate # depends on the OS, in Windows for instance it become `Scripts\activate`.
+# depends on the OS, please read, no ask: https://docs.python.org/3/library/venv.html
+# if too lazy to read, ask ChatGPT.
+source bin/activate 
+# if fail probably cross platform version constraint issue, please fix it by the lastest one available in your platform
+# if you don't know how, ask ChatGPT.
 pip install -r requirements.txt
 python cli.py migrate:sqlite
 python cli.py migrate 
@@ -20,9 +24,13 @@ python cli.py migrate
 
 ## Running
 
+Before running make sure the virtual env already activated (`source bin/activate` by executing this). If not sure, ask ChatGPT.
+
 ```bash
-fastapi dev main.py
+python cli.py serve
 ```
+
+Use above command so version checking can be performed.
 
 ## Documentation
 
