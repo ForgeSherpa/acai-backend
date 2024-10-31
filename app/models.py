@@ -18,7 +18,7 @@ class LecturerResearch(Base):
     nidn = Column(Integer, ForeignKey('lecturers.nidn'))
     title = Column(String)
     publication_date = Column(Date)
-    publication_type = Column(String, nullable=True)
+    publication_type = Column(String)
     publication_detail = Column(String)
 
     lecturer = relationship("Lecturer", back_populates="researches")

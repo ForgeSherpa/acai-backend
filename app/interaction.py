@@ -6,6 +6,7 @@ def query_model(q: str) -> ModelResponse:
     return ModelResponse(
         tables=[
             TableLookup(
+                name="table1",
                 columns=["field1"],
                 filters=[
                     FilterLookup(

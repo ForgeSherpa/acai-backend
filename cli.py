@@ -4,6 +4,9 @@ from app.models import Lecturer, LecturerResearch, Student, StudentActivity
 from app.datasets.schema_reader import preview_all, get_schema
 from sqlalchemy.orm import scoped_session
 import argparse
+import polars as pl
+import subprocess
+import os
 
 parser = argparse.ArgumentParser()
 
@@ -24,13 +27,14 @@ def performMigration():
         migrate(
             db,
             Datasets.DATA_PENELITIAN,
-            lambda data: LecturerResearch(
+            model= lambda data: LecturerResearch(
                 nidn=data[0],
                 title=data[1],
                 publication_date=handle_datetime(data[2]),
                 publication_type=data[3],
                 publication_detail=data[4],
             ),
+            clean=lambda df: df.filter(pl.col('tanggal_terbit') != '0000-00-00'),
         )
         migrate(
             db,
@@ -42,8 +46,8 @@ def performMigration():
                 generation=data[3],
                 gpa=data[4],
                 status=data[5],
-                graduation_year=data[6] % 10 if data[6] is not None else None,
-                graduation_semester=int(data[6] / 10) if data[6] is not None else None,
+                graduation_year=data[6] % 10,
+                graduation_semester=int(data[6] / 10),
             ),
         )
         migrate(
@@ -59,15 +63,37 @@ def performMigration():
         )
 
 
+def version_mismatch():
+    print('Version mismatch, please run migrate:sqlite and migrate again.')
+    exit(1)
+
 if __name__ == "__main__":
     match args.command:
         case 'migrate:sqlite':
             migrate_sqlite()
+            with open('./version') as v:
+                version = v.read()
+
+                with open('./.your_version', 'w') as f:
+                    f.write(version)
         case 'migrate':
             performMigration()
         case 'schema':
             get_schema()
         case 'preview':
             preview_all()
+        case 'serve':
+            with open('./version') as v:
+                version = v.read()
+
+                if not os.path.exists('./.your_version'):
+                    version_mismatch()
+
+                with open('./.your_version') as f:
+                    user_version = f.read()
+                    if user_version != version:
+                        version_mismatch()
+
+            subprocess.run(['fastapi', 'dev', 'main.py'])
         case _:
-            print("Invalid command")
+            print("Invalid command: only migrate:sqlite, migrate, schema, and preview is allowed.")

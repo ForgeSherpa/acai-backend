@@ -16,7 +16,7 @@ CREATE TABLE students (
 	name TEXT NOT NULL,
 	faculty TEXT NOT NULL,
 	generation INTEGER NOT NULL,
-	gpa INTEGER,
+	gpa INTEGER NOT NULL,
 	status TEXT NOT NULL,
 	graduation_year INTEGER,
 	graduation_semester INTEGER
@@ -27,10 +27,10 @@ CREATE TABLE students (
 
 CREATE TABLE "lecturer_researches" (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	nidn INTEGER,
+	nidn INTEGER NOT NULL,
 	title TEXT NOT NULL,
-	publication_date TEXT,
-	publication_type TEXT,
+	publication_date TEXT NOT NULL,
+	publication_type TEXT NOT NULL,
 	publication_detail TEXT NOT NULL,
 	CONSTRAINT lecturer_research_lecturer_FK FOREIGN KEY (nidn) REFERENCES "lecturers"(id)
 );
@@ -46,6 +46,6 @@ CREATE TABLE student_activities (
 	bank_id INTEGER NOT NULL,
 	name TEXT NOT NULL,
 	"type" TEXT NOT NULL,
-	date TEXT,
+	date TEXT NOT NULL,
 	CONSTRAINT student_activities_students_FK FOREIGN KEY (student_id) REFERENCES students(id)
 );
