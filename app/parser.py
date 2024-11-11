@@ -5,7 +5,4 @@ class Parser:
         self.query = query
 
     def parse(self):
-        for table in self.query.tables:
-            pass
-            # match table.name:
-                # case 'lecturers':
+       pass
