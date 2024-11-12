@@ -1,8 +1,18 @@
 from pydantic import BaseModel
-from typing import Any, Optional
+from typing import Any
 
 class Prompt(BaseModel):
     question: str
+
+"""
+{
+    "x": "major",
+    "y": "period(year_start,year_end)"
+}
+"""
+class ModelResponseCoordinates(BaseModel):
+    x: str
+    y: str
 
 """
 {
@@ -20,13 +30,9 @@ class Prompt(BaseModel):
 """
 class ModelResponse(BaseModel):
     intent: str
-    entities: map[str, Any]
+    entities: dict[str, Any]
     preview: str
     coordinates: ModelResponseCoordinates
-
-class ModelResponseCoordinates:
-    x: str
-    y: str
 
 class Column(BaseModel):
     name: str
