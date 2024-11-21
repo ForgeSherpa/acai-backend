@@ -6,33 +6,16 @@ class Prompt(BaseModel):
 
 """
 {
-    "x": "major",
-    "y": "period(year_start,year_end)"
-}
-"""
-class ModelResponseCoordinates(BaseModel):
-    x: str
-    y: str
-
-"""
-{
     "intent": "data_kelulusan",
     "entities": {
         "year_start": 2021,
         "year_end": 2024
-    },
-    "preview": "stacked_bar_chart",
-    "coordinates": {
-        "x": "major",
-        "y": "period(year_start,year_end)"
     }
 }
 """
 class ModelResponse(BaseModel):
     intent: str
     entities: dict[str, Any]
-    preview: str
-    coordinates: ModelResponseCoordinates
 
 class Column(BaseModel):
     name: str

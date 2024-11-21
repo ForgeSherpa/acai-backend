@@ -6,10 +6,5 @@ def query_model(q: str) -> ModelResponse:
         intent="data_kelulusan",
         entities={
             "year": 2021,
-        },
-        preview="stacked_bar_chart",
-        coordinates=ModelResponseCoordinates(
-            x="major",
-            y="period(year_start,year_end)"
-        )
+        }
     )
