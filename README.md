@@ -35,3 +35,12 @@ Use above command so version checking can be performed.
 ## Documentation
 
 The Backend Service is made using OpenAPI 3.0 standard. The Interactive SwaggerUI is accesible within `/docs` endpoint.
+
+## Authors
+
+- [@Justatnann](https://www.github.com/Justatnann) - Designer / Data Collector
+- [@Albetnv](https://www.github.com/albetnov) - BackEnd Developer
+- [@DJason](https://www.github.com/Djason28) - Data Scientist / Model Developer
+- [@Wira](https://www.github.com/Wira) - Designer / Front End Developer
+- [@JesenJeverlino](https://www.github.com/JesenJeverlino) - Designer / Front End Developer
+- @Kelvin - Data Scientist / Model Developer
