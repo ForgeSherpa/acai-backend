@@ -6,4 +6,6 @@ include/
 lib/
 lib64
 data.sqlite
+Scripts/
+pyvenv.cfg
 .your_version
