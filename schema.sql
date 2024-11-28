@@ -3,7 +3,8 @@
 CREATE TABLE "lecturers" (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	nidn INTEGER NOT NULL,
-	name TEXT NOT NULL
+	name TEXT NOT NULL,
+	major TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX lecturer_nidn_IDX ON "lecturers" (nidn);

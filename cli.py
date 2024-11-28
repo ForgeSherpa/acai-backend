@@ -2,6 +2,8 @@ from app.datasets.migrator import migrate, Datasets, handle_datetime, migrate_sq
 from app.database import SessionLocal
 from app.models import Lecturer, LecturerResearch, Student, StudentActivity
 from app.datasets.schema_reader import preview_all, get_schema
+from app.parser import Parser
+from app.data import ModelResponse
 from sqlalchemy.orm import scoped_session
 import argparse
 import polars as pl
@@ -22,7 +24,7 @@ def performMigration():
         migrate(
             db,
             Datasets.DATA_DOSEN,
-            lambda data: Lecturer(id=data[0], nidn=data[1], name=data[2]),
+            lambda data: Lecturer(id=data[0], nidn=data[1], name=data[2], major=data[3]),
         )
         migrate(
             db,
@@ -46,8 +48,8 @@ def performMigration():
                 generation=data[3],
                 gpa=data[4],
                 status=data[5],
-                graduation_year=data[6] % 10,
-                graduation_semester=int(data[6] / 10),
+                graduation_year=int(data[6] / 10),
+                graduation_semester=data[6] % 10,
             ),
         )
         migrate(
@@ -95,5 +97,15 @@ if __name__ == "__main__":
                         version_mismatch()
 
             subprocess.run(['fastapi', 'dev', 'main.py'])
+        case '_test':
+            parser = Parser(ModelResponse(
+                intent="ask_ipk_data",
+                entities={
+                    "year": 2022,
+                    # "major": "Teknik Sipil"
+                }
+            ))
+
+            print(parser.parse('list'))
         case _:
             print("Invalid command: only migrate:sqlite, migrate, schema, and preview is allowed.")

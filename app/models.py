@@ -8,6 +8,7 @@ class Lecturer(Base):
     id = Column(Integer, primary_key=True)
     nidn = Column(Integer, index=True)
     name = Column(String)
+    major = Column(String)
 
     researches = relationship("LecturerResearch", back_populates="lecturer")
 
