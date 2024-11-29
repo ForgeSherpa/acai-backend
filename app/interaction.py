@@ -2,10 +2,7 @@ from .data import ModelResponse
 import requests
 
 def query_model(q: str) -> ModelResponse:
-    data = {
-        "text": q
-    }
-    res = requests.post("http://localhost:5005/model/parse", json=data)
+    res = requests.post("http://localhost:5005/model/parse", json={"text": q})
     data = res.json()
 
     return ModelResponse(

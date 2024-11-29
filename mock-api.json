@@ -1,0 +1,129 @@
+{
+  "uuid": "bf9596ce-b044-4176-a0b0-4a1f6294dd62",
+  "lastMigration": 33,
+  "name": "AI Core Mock API",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 5005,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "f572c344-62f9-4482-b4af-d0e06a2a0851",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "",
+      "responses": [
+        {
+          "uuid": "7fd11209-874f-4917-b894-0e70ae8a63e7",
+          "body": "{\n  \"message\": \"MOCK API is ready!\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "A testing ground for mock API",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "f04a9fd8-8443-4b20-8ad5-a0f5838c6f5c",
+      "type": "http",
+      "documentation": "Model Parsing Mock",
+      "method": "post",
+      "endpoint": "model/parse",
+      "responses": [
+        {
+          "uuid": "5c5d476e-288b-4731-aa74-125fd48fac55",
+          "body": "{\n  \"intent\": {\n    \"name\": \"ask_ipk_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"year\",\n      \"value\": 2022\n    },\n    {\n      \"entity\": \"major\",\n      \"value\": \"Teknik Sipil\"\n    }\n  ]\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "Minimal Response Mocking (only data used by the backend is mocked)",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "f572c344-62f9-4482-b4af-d0e06a2a0851"
+    },
+    {
+      "type": "route",
+      "uuid": "f04a9fd8-8443-4b20-8ad5-a0f5838c6f5c"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}

@@ -1,42 +1,62 @@
-# AcAI Backend
+# 🎓 AcAI Backend - Academic AI Accreditation Platform
 
-FastAPI(+SQLAlchemy) Powered Backend Service for AcAI Service
+## 🚀 Overview
 
-## Requirements
+AcAI Backend is a sophisticated text prompt accreditation system designed to revolutionize academic credential information extraction using advanced AI technologies.
 
-- Python 3.10+ (preferable 3.12)
+![Python Version](https://img.shields.io/badge/Python-3.13.0+-blue.svg)
+![FastAPI](https://img.shields.io/badge/Framework-FastAPI-green.svg)
+![SQLAlchemy](https://img.shields.io/badge/ORM-SQLAlchemy-red.svg)
+![AI Powered](https://img.shields.io/badge/AI-Powered-blueviolet.svg)
 
-## Installation
+## 🌟 Key Features
 
-Bash:
+- 🤖 AI-Powered Text Prompt Analysis
+- 🔍 Advanced Search and Filtering
+- 📈 Fast and Easy to Install
+
+## 🛠 Tech Stack
+
+- **Backend Framework**: FastAPI
+- **ORM**: SQLAlchemy
+- **Database**: SQLite & MySQL (soon)
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.13+
+- [AcAI Core](https://github.com/ForgeSherpa/acai-core) / MockAPI
+
+### Setting up MockAPI (optional)
+
+Install [Mockoon](https://mockoon.com/download/), import `mock-api.json`. Run.
+
+### Installation
+
+Linux Only
 
 ```bash
-python -m venv .
-# depends on the OS, please read, no ask: https://docs.python.org/3/library/venv.html
-# if too lazy to read, ask ChatGPT.
-source bin/activate 
-# if fail probably cross platform version constraint issue, please fix it by the lastest one available in your platform
-# if you don't know how, ask ChatGPT.
+# clone the repo
+git clone https://github.com/ForgeSherpa/acai-backend
+
+# Create the virtual environment
+python -m venv . # or venv/
+source bin/activate
+
+# install dependencies
 pip install -r requirements.txt
+
+# SQLite Setup
 python cli.py migrate:sqlite
-python cli.py migrate 
-```
+python cli.py migrate
 
-## Running
-
-Before running make sure the virtual env already activated (`source bin/activate` by executing this). If not sure, ask ChatGPT.
-
-```bash
+# Serve
 python cli.py serve
 ```
 
-Use above command so version checking can be performed.
+> Windows users, please consult ChatGPT.
 
-## Documentation
-
-The Backend Service is made using OpenAPI 3.0 standard. The Interactive SwaggerUI is accesible within `/docs` endpoint.
-
-## Authors
+## Made with ❤️ by AcAI Team
 
 - [@Justatnann](https://www.github.com/Justatnann) - Designer / Data Collector
 - [@Albetnv](https://www.github.com/albetnov) - BackEnd Developer

@@ -1,8 +1,19 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Any
 
+"""
+{
+    "question": "Saya ingin tahu data kelulusan untuk tahun 2022.",
+    "mode": "list",
+    "group_by": "year",
+    "page": 1
+}
+"""
 class Prompt(BaseModel):
     question: str
+    mode: str = Field(None)
+    group_by: str = Field(None)
+    page: int = Field(None)
 
 """
 {
@@ -54,3 +65,17 @@ class Tables(BaseModel):
 class GenericResponse[T](BaseModel):
     message: str
     data: T
+
+class AskResponse(BaseModel):
+    data: Any
+    meta: dict[str, Any]
+
+class ErrorResponse(BaseModel):
+    message: str
+    context: dict[str, Any]
+
+    def to_json(self) -> dict[str, Any]:
+        return {
+            "message": self.message,
+            "context": self.context
+        }
