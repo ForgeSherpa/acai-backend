@@ -1,8 +1,10 @@
-from app.datasets.migrator import migrate, Datasets, handle_datetime, migrate_sqlite
+from app.datasets.migrator import migrate, Datasets, handle_datetime, migrate_sqlite, migrate_mysql
 from app.database import SessionLocal
+from app.settings import USE_SQLITE
 from app.models import Lecturer, LecturerResearch, Student, StudentActivity
 from app.datasets.schema_reader import preview_all, get_schema
 from sqlalchemy.orm import scoped_session
+from sqlalchemy import text
 import argparse
 import polars as pl
 import subprocess
@@ -19,6 +21,10 @@ def performMigration():
 
     # scoped session here for local threading
     with scoped_session(SessionLocal)() as db:
+        if not USE_SQLITE:
+            # disable foreign key check for MySQL temporarily
+            db.execute(text('SET FOREIGN_KEY_CHECKS=0'))
+
         migrate(
             db,
             Datasets.DATA_DOSEN,
@@ -28,13 +34,15 @@ def performMigration():
             db,
             Datasets.DATA_PENELITIAN,
             model= lambda data: LecturerResearch(
-                nidn=data[0],
-                title=data[1],
-                publication_date=handle_datetime(data[2]),
-                publication_type=data[3],
-                publication_detail=data[4],
+            nidn=data[0],
+            title=str(data[1]).encode('utf-8'),
+            publication_date=handle_datetime(data[2]),
+            publication_type=data[3],
+            publication_detail=data[4],
             ),
-            clean=lambda df: df.filter(pl.col('tanggal_terbit') != '0000-00-00'),
+            clean=lambda df: df.filter(pl.col('tanggal_terbit') != '0000-00-00')
+                     .with_columns(pl.col('judul_penelitian').str.replace_all(r'[^\x00-\x7F]+', '', literal=False))
+                     .filter(pl.col('nidn_dosen').str.contains(r'^\d+$')),
         )
         migrate(
             db,
@@ -62,6 +70,10 @@ def performMigration():
             )
         )
 
+        if not USE_SQLITE:
+            # enable foreign key check back
+            db.execute(text('SET FOREIGN_KEY_CHECKS=1'))
+
 
 def version_mismatch():
     print('Version mismatch, please run migrate:sqlite and migrate again.')
@@ -69,8 +81,14 @@ def version_mismatch():
 
 if __name__ == "__main__":
     match args.command:
-        case 'migrate:sqlite':
-            migrate_sqlite()
+        case 'migrate:schema':
+            print(f"Using {'SQLite' if USE_SQLITE else 'MySQL'}")
+
+            if USE_SQLITE:
+                migrate_sqlite()
+            else: 
+                migrate_mysql()
+
             with open('./version') as v:
                 version = v.read()
 
@@ -96,4 +114,4 @@ if __name__ == "__main__":
 
             subprocess.run(['fastapi', 'dev', 'main.py'])
         case _:
-            print("Invalid command: only migrate:sqlite, migrate, schema, and preview is allowed.")
+            print("Invalid command: only migrate:schema, migrate, schema, and preview is allowed.")

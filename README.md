@@ -19,7 +19,7 @@ AcAI Backend is a sophisticated text prompt accreditation system designed to rev
 
 - **Backend Framework**: FastAPI
 - **ORM**: SQLAlchemy
-- **Database**: SQLite & MySQL (soon)
+- **Database**: SQLite & MySQL
 
 ## 🚀 Quick Start
 
@@ -31,9 +31,7 @@ AcAI Backend is a sophisticated text prompt accreditation system designed to rev
 
 Install [Mockoon](https://mockoon.com/download/), import `mock-api.json`. Run.
 
-### Installation
-
-Linux Only
+### Installation (Linux Only Guide)
 
 ```bash
 # clone the repo
@@ -46,15 +44,34 @@ source bin/activate
 # install dependencies
 pip install -r requirements.txt
 
-# SQLite Setup
-python cli.py migrate:sqlite
-python cli.py migrate
-
 # Serve
 python cli.py serve
 ```
 
-> Windows users, please consult ChatGPT.
+### SQLite Setup
+
+```bash
+cp .env.example .env
+python cli.py migrate:schema
+python cli.py migrate
+```
+
+### MySQL Setup
+
+```bash
+cp .env.example .env
+# Set USE_SQLITE to true in the ENV
+sed -i 's/\(USE_SQLITE=\)true/\1false/' .env
+# Set the MySQL credentials or just use nano/vim.
+# sed -i 's/\(MYSQL_USER=\)root/\1your_user/' .env
+# sed -i 's/\(MYSQL_PASSWORD=\)/\1your_password/' .env
+# sed -i 's/\(MYSQL_HOST=\)localhost/\1your_host/' .env
+# sed -i 's/\(MYSQL_DB=\)acai/\1your_database/' .env
+python cli.py migrate:schema
+python cli.py migrate
+```
+
+> Windows users, please consult ChatGPT for assistance in case you don't know.
 
 ## Made with ❤️ by AcAI Team
 
