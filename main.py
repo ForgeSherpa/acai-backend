@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from app.data import Prompt, GenericResponse, Tables, AskResponse, ErrorResponse
 from app.schema import Schema
 from app.interaction import query_model
-from app.parser import Parser
+from app.parsers.parser import Parser
 
 app = FastAPI()
 
