@@ -36,12 +36,3 @@ class AskGraduationData(IntentResponse):
             "graduation_year": row.graduation_year,
             "graduation_semester": row.graduation_semester,
         }
-
-    def get_aggregate_result(self, result):
-        return (
-            [float(row[0]) for row in result]
-            if len(result) > 1
-            else float(result[0][0])
-            if self.group_by is None
-            else {row[1]: float(row[0]) for row in result}
-        )

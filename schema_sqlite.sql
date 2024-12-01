@@ -5,6 +5,7 @@ CREATE TABLE "lecturers" (
 	nidn INTEGER NOT NULL,
 	name TEXT NOT NULL,
 	major TEXT NOT NULL
+	faculty TEXT NOT NULL
 );
 
 CREATE UNIQUE INDEX lecturer_nidn_IDX ON "lecturers" (nidn);
@@ -16,6 +17,7 @@ CREATE TABLE students (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	name TEXT NOT NULL,
 	faculty TEXT NOT NULL,
+	major TEXT NOT NULL,
 	generation INTEGER NOT NULL,
 	gpa INTEGER NOT NULL,
 	status TEXT NOT NULL,

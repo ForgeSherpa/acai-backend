@@ -16,6 +16,21 @@ parser.add_argument('command')
 
 args = parser.parse_args()
 
+def from_major_parse_faculty(major:str) -> str:
+    faculties = {
+        'Fakultas Bisnis dan Manajemen': ['Manajemen', 'Akuntansi', 'Pariwisata'],
+        'Fakultas Ilmu Pendidikan': ['Pendidikan Bahasa Inggris'],
+        'Fakultas Ilmu Komputer': ['Sistem Informasi', 'Teknologi Informasi'],
+        'Fakultas Teknik Sipil dan Perencanaan': ['Teknik Sipil', 'Arsitektur'],
+        'Fakultas Hukum': ['Ilmu Hukum']
+    }
+    
+    for faculty, majors in faculties.items():
+        if major in majors:
+            return faculty
+
+    return 'Unknown Faculty'
+
 def performMigration():
     print('Migrating')
 
@@ -28,7 +43,7 @@ def performMigration():
         migrate(
             db,
             Datasets.DATA_DOSEN,
-            lambda data: Lecturer(id=data[0], nidn=data[1], name=data[2], major=data[3]),
+            lambda data: Lecturer(id=data[0], nidn=data[1], name=data[2], major=data[3], faculty=from_major_parse_faculty(data[3])),
         )
         migrate(
             db,
@@ -50,7 +65,8 @@ def performMigration():
             lambda data: Student(
                 id=data[0],
                 name=data[1],
-                faculty=data[2],
+                major=data[2],
+                faculty=from_major_parse_faculty(data[2]),
                 generation=data[3],
                 gpa=data[4],
                 status=data[5],
@@ -76,7 +92,7 @@ def performMigration():
 
 
 def version_mismatch():
-    print('Version mismatch, please run migrate:sqlite and migrate again.')
+    print('Version mismatch, please run migrate:schema and migrate again.')
     exit(1)
 
 if __name__ == "__main__":

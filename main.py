@@ -29,7 +29,7 @@ def schema():
     response_model=AskResponse,
     responses={400: {"model": ErrorResponse}},
     summary="Ask the model",
-    description="Dear FE, 'mode', 'group_by', and 'page' is optional. Use 'page' if 'mode' is 'list'. Usually, 'mode' are inferred by the Model",
+    description="Dear FE, 'mode', 'group_by', and 'page' is optional. Use 'page' if 'mode' is 'list'. Usually, 'mode' are inferred by the Model so you don't need to specify it.",
 )
 def ask(prompt: Prompt):
     query = query_model(prompt.question)

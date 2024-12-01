@@ -9,6 +9,7 @@ class Lecturer(Base):
     nidn = Column(Integer, index=True)
     name = Column(String)
     major = Column(String)
+    faculty = Column(String)
 
     researches = relationship("LecturerResearch", back_populates="lecturer")
 
@@ -29,6 +30,7 @@ class Student(Base):
 
     id = Column(Integer, primary_key=True) # npm
     name = Column(String)
+    major = Column(String)
     faculty = Column(String)
     generation = Column(Integer)
     gpa = Column(Float)

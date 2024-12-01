@@ -14,6 +14,7 @@ AcAI Backend is a sophisticated text prompt accreditation system designed to rev
 - 🤖 AI-Powered Text Prompt Analysis
 - 🔍 Advanced Search and Filtering
 - 📈 Fast and Easy to Install
+- 🕶️ Not so State of Art Parser Implementation
 
 ## 🛠 Tech Stack
 
