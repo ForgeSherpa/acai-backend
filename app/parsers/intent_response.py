@@ -264,6 +264,9 @@ class IntentResponse(AdvancedIntentResponse):
             stmt = self.get_query(select(self.model))
             result = db.scalars(stmt).all()
 
+            if len(result) <= 0:
+                raise ValueError("Kosong pak datanya. Coba cek intent dan entity.")
+
             data = [self.get_list_map(row) for row in result]
 
             return self.with_pagination(data, self.get_total_page(db))
@@ -294,6 +297,9 @@ class IntentResponse(AdvancedIntentResponse):
             )
 
             result = db.execute(query).all()
+
+            if len(result) <= 0:
+                raise ValueError("Kosong pak datanya. Coba cek intent dan entity.")
 
             data = self.get_aggregate_result(result)
 
