@@ -10,7 +10,7 @@ class AskGraduationData(IntentResponse):
     valid_mode = ["count", "list"]
     valid_entities = {
         "year": "graduation_year",
-        "major": "faculty",
+        "major": "major",
         "year_range": "range:graduation_year",
         "faculty": "faculty",
         "period": "graduation_semester",
@@ -21,6 +21,7 @@ class AskGraduationData(IntentResponse):
         "graduation_year",
         "graduation_semester",
         "faculty",
+        "major",
     ]
     model = Student
     aggregate_field = "id"

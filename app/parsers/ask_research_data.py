@@ -13,7 +13,7 @@ class AskResearchData(IntentResponse):
         "faculty": "lecturer__faculty",
     }
     valid_groupby = [
-        "year",
+        "publication_date",
         "publication_type",
     ]
     model = LecturerResearch

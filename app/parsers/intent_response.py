@@ -23,6 +23,7 @@ class RangeFilter[T]:
             "end": self.end,
         }
 
+
 class RelationshipFilter[T]:
     relationship: str
     field: str
@@ -39,6 +40,7 @@ class RelationshipFilter[T]:
             "field": self.field,
             "value": self.value,
         }
+
 
 class AdvancedIntentResponse(ABC):
     name: str
@@ -63,6 +65,11 @@ class AdvancedIntentResponse(ABC):
         page: int = 1,
         mode: str = None,
     ) -> None:
+        # reset all the property to the default value
+        self.entities = {}
+        self.relationships = []
+        self.range_filter = []
+
         # map the entities to the valid entities and filters.
         for k, v in entities.items():
             valid_entity = self.valid_entities.get(k)
@@ -181,13 +188,14 @@ class IntentResponse(AdvancedIntentResponse):
         pass
 
     def get_aggregate_result(self, result):
-        return (
-            [float(row[0]) for row in result]
-            if len(result) > 1
-            else float(result[0][0])
-            if self.group_by is None
-            else {row[1]: float(row[0]) for row in result}
-        )
+        if self.group_by is None:
+            return (
+                [float(row[0]) for row in result]
+                if len(result) > 1
+                else float(result[0][0])
+            )
+
+        return {row[1]: float(row[0]) for row in result}
 
     def get_bind_queries(self, with_pagination: bool = True) -> list:
         return [
@@ -230,12 +238,21 @@ class IntentResponse(AdvancedIntentResponse):
             return select
 
         if self.group_by is not None:
-            group_by_column = getattr(self.model, self.group_by)
+            if "date" in self.group_by:
+                group_by_column = extract("year", getattr(self.model, self.group_by))
+            else:
+                group_by_column = getattr(self.model, self.group_by)
+
             select = select.group_by(group_by_column)
 
         return select
 
     def bind_entities(self, select: Select):
+        # for field, value in self.entities.items():
+        # select = select.where(getattr(self.model, field).ilike(value))
+
+        # return select
+
         return select.filter_by(**self.entities) if self.entities else select
 
     def bind_pagination(self, select: Select):
@@ -254,10 +271,21 @@ class IntentResponse(AdvancedIntentResponse):
     def bind_relationship_filter(self, select: Select):
         for filter in self.relationships:
             select = select.where(
-                getattr(self.model, filter.relationship).has(**{filter.field: filter.value})
+                getattr(self.model, filter.relationship).has(
+                    **{filter.field: filter.value}
+                )
             )
 
         return select
+
+    def bind_group_by_select(self):
+        if self.group_by is not None:
+            if "date" in self.group_by:
+                return extract("year", getattr(self.model, self.group_by))
+
+            return getattr(self.model, self.group_by)
+
+        return None
 
     def list(self):
         with SessionLocal() as db:
@@ -265,6 +293,7 @@ class IntentResponse(AdvancedIntentResponse):
             result = db.scalars(stmt).all()
 
             if len(result) <= 0:
+                print(f"entites: {self.entities}")
                 raise ValueError("Kosong pak datanya. Coba cek intent dan entity.")
 
             data = [self.get_list_map(row) for row in result]
@@ -290,7 +319,8 @@ class IntentResponse(AdvancedIntentResponse):
                 select(
                     *[
                         modes[self.mode],
-                        getattr(self.model, self.group_by) if self.group_by else None,
+                        self.bind_group_by_select() if self.group_by is not None else None,
+                        # getattr(self.model, self.group_by) if self.group_by else None,
                     ]
                 ),
                 with_pagination=False,
@@ -298,7 +328,7 @@ class IntentResponse(AdvancedIntentResponse):
 
             result = db.execute(query).all()
 
-            if len(result) <= 0:
+            if len(result) <= 0 or result[0][0] is None:
                 raise ValueError("Kosong pak datanya. Coba cek intent dan entity.")
 
             data = self.get_aggregate_result(result)

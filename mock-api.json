@@ -48,7 +48,7 @@
       "responses": [
         {
           "uuid": "5c5d476e-288b-4731-aa74-125fd48fac55",
-          "body": "{\n  \"intent\": {\n    \"name\": \"ask_graduation_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"year\",\n      \"value\": \"2020\"\n    },\n    {\n      \"entity\": \"major\",\n      \"value\": \"Teknik Sipil\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"count\"\n    }\n  ]\n}",
+          "body": "{\n  \"intent\": {\n    \"name\": \"ask_graduation_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"year\",\n      \"value\": \"2022\"\n    },\n    {\n      \"entity\": \"major\",\n      \"value\": \"Teknik Sipil\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"count\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Ask Graduation Data",
@@ -61,7 +61,7 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": false,
+          "default": true,
           "crudKey": "id",
           "callbacks": []
         },
@@ -86,7 +86,7 @@
         },
         {
           "uuid": "2c123fa0-4dfb-4eb3-b272-3410acc98f15",
-          "body": "{\n  \"intent\": {\n    \"name\": \"ask_research_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"major\",\n      \"value\": \"Sistem Informasi\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"list\"\n    }\n  ]\n}",
+          "body": "{\n  \"intent\": {\n    \"name\": \"ask_research_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"major\",\n      \"value\": \"Sistem Informasi\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"count\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Ask Research Data",
@@ -137,7 +137,7 @@
           "rulesOperator": "OR",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": true,
+          "default": false,
           "crudKey": "id",
           "callbacks": []
         }
