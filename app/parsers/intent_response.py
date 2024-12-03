@@ -248,11 +248,6 @@ class IntentResponse(AdvancedIntentResponse):
         return select
 
     def bind_entities(self, select: Select):
-        # for field, value in self.entities.items():
-        # select = select.where(getattr(self.model, field).ilike(value))
-
-        # return select
-
         return select.filter_by(**self.entities) if self.entities else select
 
     def bind_pagination(self, select: Select):
