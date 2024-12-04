@@ -1,4 +1,10 @@
-from app.datasets.migrator import migrate, Datasets, handle_datetime, migrate_sqlite, migrate_mysql
+from app.datasets.migrator import (
+    migrate,
+    Datasets,
+    handle_datetime,
+    migrate_sqlite,
+    migrate_mysql,
+)
 from app.database import SessionLocal
 from app.settings import USE_SQLITE
 from app.models import Lecturer, LecturerResearch, Student, StudentActivity
@@ -12,52 +18,69 @@ import os
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument('command')
+parser.add_argument("command")
 
 args = parser.parse_args()
 
-def from_major_parse_faculty(major:str) -> str:
+
+def from_major_parse_faculty(major: str) -> str:
     faculties = {
-        'Fakultas Bisnis dan Manajemen': ['Manajemen', 'Akuntansi', 'Pariwisata'],
-        'Fakultas Ilmu Pendidikan': ['Pendidikan Bahasa Inggris'],
-        'Fakultas Ilmu Komputer': ['Sistem Informasi', 'Teknologi Informasi'],
-        'Fakultas Teknik Sipil dan Perencanaan': ['Teknik Sipil', 'Arsitektur'],
-        'Fakultas Hukum': ['Ilmu Hukum']
+        "Fakultas Bisnis dan Manajemen": [
+            "Manajemen",
+            "Akuntansi",
+            "Pariwisata",
+            "Magister Manajemen",
+        ],
+        "Fakultas Ilmu Pendidikan": ["Pendidikan Bahasa Inggris"],
+        "Fakultas Ilmu Komputer": ["Sistem Informasi", "Teknologi Informasi"],
+        "Fakultas Teknik Sipil dan Perencanaan": ["Teknik Sipil", "Arsitektur"],
+        "Fakultas Hukum": ["Ilmu Hukum", "Magister Hukum"],
     }
-    
+
     for faculty, majors in faculties.items():
         if major in majors:
             return faculty
 
-    return 'Unknown Faculty'
+    return "Unknown Faculty"
+
 
 def performMigration():
-    print('Migrating')
+    print("Migrating")
 
     # scoped session here for local threading
     with scoped_session(SessionLocal)() as db:
         if not USE_SQLITE:
             # disable foreign key check for MySQL temporarily
-            db.execute(text('SET FOREIGN_KEY_CHECKS=0'))
+            db.execute(text("SET FOREIGN_KEY_CHECKS=0"))
 
         migrate(
             db,
             Datasets.DATA_DOSEN,
-            lambda data: Lecturer(id=data[0], nidn=data[1], name=data[2], major=data[3], faculty=from_major_parse_faculty(data[3])),
+            lambda data: Lecturer(
+                id=data[0],
+                nidn=data[1],
+                name=data[2],
+                major=data[3],
+                faculty=from_major_parse_faculty(data[3]),
+            ),
         )
         migrate(
             db,
             Datasets.DATA_PENELITIAN,
-            model= lambda data: LecturerResearch(
-            nidn=data[0],
-            title=str(data[1]).encode('utf-8'),
-            publication_date=handle_datetime(data[2]),
-            publication_type=data[3],
-            publication_detail=data[4],
+            model=lambda data: LecturerResearch(
+                nidn=data[0],
+                title=str(data[1]).encode("utf-8"),
+                publication_date=handle_datetime(data[2]),
+                publication_type=data[3],
+                publication_detail=data[4],
             ),
-            clean=lambda df: df.filter(pl.col('tanggal_terbit') != '0000-00-00')
-                     .with_columns(pl.col('judul_penelitian').str.replace_all(r'[^\x00-\x7F]+', '', literal=False))
-                     .filter(pl.col('nidn_dosen').str.contains(r'^\d+$')),
+            clean=lambda df: df.filter(pl.col("tanggal_terbit") != "0000-00-00")
+            .with_columns(
+                pl.col("judul_penelitian").str.replace_all(
+                    r"[^\x00-\x7F]+", "", literal=False
+                )
+            )
+            .filter(pl.col("nidn_dosen").str.contains(r"^\d+$")),
         )
         migrate(
             db,
@@ -73,6 +96,7 @@ def performMigration():
                 graduation_year=int(data[6] / 10),
                 graduation_semester=data[6] % 10,
             ),
+            clean=lambda df: df.filter(pl.col("prodi_mahasiswa") != "Teknik Elektro"),
         )
         migrate(
             db,
@@ -83,51 +107,54 @@ def performMigration():
                 name=data[2],
                 type=data[3],
                 date=data[4],
-            )
+            ),
         )
 
         if not USE_SQLITE:
             # enable foreign key check back
-            db.execute(text('SET FOREIGN_KEY_CHECKS=1'))
+            db.execute(text("SET FOREIGN_KEY_CHECKS=1"))
 
 
 def version_mismatch():
-    print('Version mismatch, please run migrate:schema and migrate again.')
+    print("Version mismatch, please run migrate:schema and migrate again.")
     exit(1)
+
 
 if __name__ == "__main__":
     match args.command:
-        case 'migrate:schema':
+        case "migrate:schema":
             print(f"Using {'SQLite' if USE_SQLITE else 'MySQL'}")
 
             if USE_SQLITE:
                 migrate_sqlite()
-            else: 
+            else:
                 migrate_mysql()
 
-            with open('./version') as v:
+            with open("./version") as v:
                 version = v.read()
 
-                with open('./.your_version', 'w') as f:
+                with open("./.your_version", "w") as f:
                     f.write(version)
-        case 'migrate':
+        case "migrate":
             performMigration()
-        case 'schema':
+        case "schema":
             get_schema()
-        case 'preview':
+        case "preview":
             preview_all()
-        case 'serve':
-            with open('./version') as v:
+        case "serve":
+            with open("./version") as v:
                 version = v.read()
 
-                if not os.path.exists('./.your_version'):
+                if not os.path.exists("./.your_version"):
                     version_mismatch()
 
-                with open('./.your_version') as f:
+                with open("./.your_version") as f:
                     user_version = f.read()
                     if user_version != version:
                         version_mismatch()
 
-            subprocess.run(['fastapi', 'dev', 'main.py'])
+            subprocess.run(["fastapi", "dev", "main.py"])
         case _:
-            print("Invalid command: only migrate:schema, migrate, schema, and preview is allowed.")
+            print(
+                "Invalid command: only migrate:schema, migrate, schema, and preview is allowed."
+            )
