@@ -27,7 +27,16 @@ def schema():
 @app.post(
     "/ask",
     response_model=AskResponse,
-    responses={400: {"model": ErrorResponse}},
+    responses={
+        400: {
+            "model": ErrorResponse,
+            "description": "Bad request. Your request contains invalid group_by or the model response return invalid data. See `context` for detail.",
+        },
+        404: {
+            "model": ErrorResponse,
+            "description": "Data not found. Please review your request. See `context` for detail.",
+        },
+    },
     summary="Ask the model",
     description="Dear FE, 'mode', 'group_by', and 'page' is optional. Use 'page' if 'mode' is 'list'. Usually, 'mode' are inferred by the Model so you don't need to specify it.",
 )
