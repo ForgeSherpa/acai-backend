@@ -20,3 +20,7 @@ print(f"MYSQL_HOST={MYSQL_HOST}")
 print(f"MYSQL_USER={MYSQL_USER}")
 print(f"MYSQL_PASSWORD={MYSQL_PASSWORD}")
 print(f"MYSQL_DB={MYSQL_DB}")
+
+if USE_SQLITE:
+    print("Warning! SQLITE is supported but not tested and pritiozed.")
+    print("Warning! Expect issues!!!!!")
