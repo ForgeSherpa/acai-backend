@@ -248,7 +248,10 @@ class IntentResponse(AdvancedIntentResponse):
         return select
 
     def bind_entities(self, select: Select):
-        return select.filter_by(**self.entities) if self.entities else select
+        for entity, value in self.entities.items():
+            select = select.where(getattr(self.model, entity).ilike(value))
+
+        return select
 
     def bind_pagination(self, select: Select):
         offset = (self.page - 1) * self.per_page
@@ -288,7 +291,6 @@ class IntentResponse(AdvancedIntentResponse):
             result = db.scalars(stmt).all()
 
             if len(result) <= 0:
-                print(f"entites: {self.entities}")
                 raise ValueError("Kosong pak datanya. Coba cek intent dan entity.")
 
             data = [self.get_list_map(row) for row in result]
@@ -314,8 +316,7 @@ class IntentResponse(AdvancedIntentResponse):
                 select(
                     *[
                         modes[self.mode],
-                        self.bind_group_by_select() if self.group_by is not None else None,
-                        # getattr(self.model, self.group_by) if self.group_by else None,
+                        self.bind_group_by_select(),
                     ]
                 ),
                 with_pagination=False,

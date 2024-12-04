@@ -12,7 +12,7 @@ class AskIpkData(IntentResponse):
     valid_mode = ["avg", "sum", "list"]
     valid_entities = {
         "year": "graduation_year",
-        "major": "faculty",
+        "major": "major",
         "year_range": "range:graduation_year",
         "faculty": "faculty",
         "period": "graduation_semester",
