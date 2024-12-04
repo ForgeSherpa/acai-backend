@@ -56,15 +56,12 @@ class Parser:
                 content=ErrorResponse(
                     message=str(e),
                     context={
-                        "intent": self.query.intent,
-                        "entities": self.query.entities,
-                        "mode": mode,
-                        "group_by": group_by,
-                        "page": page,
-                        "applied_conditions": e.applied_entities,
-                        "year_filter": e.applied_year,
-                        "relation_filter": e.applied_relation,
-                        "range_filters": e.applied_range,
+                        **e.meta,
+                        "model": {
+                            "intent": self.query.intent,
+                            "entities": self.query.entities,
+                        },
+                        "raw_query": e.raw_query,
                     },
                 ).to_json(),
             )

@@ -12,8 +12,8 @@ class AskActivityData(IntentResponse):
         "activity_level": "type",
     }
     valid_groupby = [
-        "year",
-        "activity_type",
+        "date",
+        "type",
     ]
     model = StudentActivity
     aggregate_field = "id"

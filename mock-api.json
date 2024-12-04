@@ -48,7 +48,7 @@
       "responses": [
         {
           "uuid": "5c5d476e-288b-4731-aa74-125fd48fac55",
-          "body": "{\n  \"intent\": {\n    \"name\": \"ask_graduation_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"year\",\n      \"value\": \"2022\"\n    },\n    {\n      \"entity\": \"major\",\n      \"value\": \"teknik sipil\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"count\"\n    }\n  ]\n}",
+          "body": "{\n  \"intent\": {\n    \"name\": \"ask_graduation_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"mode\",\n      \"value\": \"count\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Ask Graduation Data",
@@ -67,7 +67,7 @@
         },
         {
           "uuid": "1af7c6a2-3984-4565-b6ea-a687af60d309",
-          "body": "{\n  \"intent\": {\n    \"name\": \"ask_ipk_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"year_range\",\n      \"value\": \"2020 - 2022\"\n    },\n    {\n      \"entity\": \"major\",\n      \"value\": \"Teknik Sipil\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"avg\"\n    }\n  ]\n}",
+          "body": "{\n  \"intent\": {\n    \"name\": \"ask_ipk_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"mode\",\n      \"value\": \"avg\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Ask IPK Data",
@@ -86,7 +86,7 @@
         },
         {
           "uuid": "2c123fa0-4dfb-4eb3-b272-3410acc98f15",
-          "body": "{\n  \"intent\": {\n    \"name\": \"ask_research_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"major\",\n      \"value\": \"Sistem Informasi\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"count\"\n    }\n  ]\n}",
+          "body": "{\n  \"intent\": {\n    \"name\": \"ask_research_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"mode\",\n      \"value\": \"count\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Ask Research Data",
@@ -105,7 +105,7 @@
         },
         {
           "uuid": "4e587baf-6715-46b4-92b5-7d21d74b0393",
-          "body": "{\n  \"intent\": {\n    \"name\": \"ask_activity_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"major\",\n      \"value\": \"Sistem Informasi\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"list\"\n    }\n  ]\n}",
+          "body": "{\n  \"intent\": {\n    \"name\": \"ask_activity_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"mode\",\n      \"value\": \"count\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Ask Activity Data",
@@ -124,7 +124,7 @@
         },
         {
           "uuid": "808c8948-24a7-4289-996f-41a52f0f43cd",
-          "body": "{\n  \"intent\": {\n    \"name\": \"ask_lecturer_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"major\",\n      \"value\": \"Sistem Informasi\"\n    },\n    {\n      \"entity\": \"mode\",\n      \"value\": \"list\"\n    }\n  ]\n}",
+          "body": "{\n  \"intent\": {\n    \"name\": \"ask_lecturer_data\"\n  },\n  \"entities\": [\n    {\n      \"entity\": \"mode\",\n      \"value\": \"list\"\n    }\n  ]\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "Ask Lecturer Data",

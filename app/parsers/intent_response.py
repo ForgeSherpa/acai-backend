@@ -293,10 +293,8 @@ class IntentResponse(AdvancedIntentResponse):
 
             if len(result) <= 0:
                 raise DataEmptyError(
-                    entities=self.entities,
-                    year=self.year_filter,
-                    relation=self.relationships,
-                    range=self.range_filter,
+                    meta=self.meta,
+                    raw_query=str(stmt),
                 )
 
             data = [self.get_list_map(row) for row in result]
@@ -331,12 +329,7 @@ class IntentResponse(AdvancedIntentResponse):
             result = db.execute(query).all()
 
             if len(result) <= 0 or result[0][0] is None:
-                raise DataEmptyError(
-                    entities=self.entities,
-                    year=self.year_filter,
-                    relation=self.relationships,
-                    range=self.range_filter,
-                )
+                raise DataEmptyError(meta=self.meta, raw_query=str(query))
 
             data = self.get_aggregate_result(result)
 

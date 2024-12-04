@@ -80,7 +80,8 @@ def performMigration():
                     r"[^\x00-\x7F]+", "", literal=False
                 )
             )
-            .filter(pl.col("nidn_dosen").str.contains(r"^\d+$")),
+            .filter(pl.col("nidn_dosen").str.contains(r"^\d+$"))
+            .filter(pl.col("tanggal_terbit").str.contains(r"(1|2)\d{3}(.*)")),
         )
         migrate(
             db,

@@ -20,7 +20,6 @@ class AskIpkData(IntentResponse):
     }
     valid_groupby = [
         "generation",
-        "status",
         "graduation_year",
         "graduation_semester",
         "faculty",
