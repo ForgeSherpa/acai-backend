@@ -6,6 +6,7 @@ from .ask_research_data import AskResearchData
 from .ask_activity_data import AskActivityData
 from .ask_lecturer_data import AskLecturerData
 from .intent_response import AdvancedIntentResponse
+from .data_empty_error import DataEmptyError
 
 
 class Parser:
@@ -15,9 +16,9 @@ class Parser:
     def __init__(self, query: ModelResponse):
         self.query = query
         self.intents: dict[str, AdvancedIntentResponse] = {
-            'ask_graduation_data': AskGraduationData,
-            'ask_research_data': AskResearchData,
-            'ask_activity_data': AskActivityData,
+            "ask_graduation_data": AskGraduationData,
+            "ask_research_data": AskResearchData,
+            "ask_activity_data": AskActivityData,
             "ask_ipk_data": AskIpkData,
             "ask_lecturer_data": AskLecturerData,
         }
@@ -46,6 +47,24 @@ class Parser:
                         "mode": mode,
                         "group_by": group_by,
                         "page": page,
+                    },
+                ).to_json(),
+            )
+        except DataEmptyError as e:
+            return JSONResponse(
+                status_code=404,
+                content=ErrorResponse(
+                    message=str(e),
+                    context={
+                        "intent": self.query.intent,
+                        "entities": self.query.entities,
+                        "mode": mode,
+                        "group_by": group_by,
+                        "page": page,
+                        "applied_conditions": e.applied_entities,
+                        "year_filter": e.applied_year,
+                        "relation_filter": e.applied_relation,
+                        "range_filters": e.applied_range,
                     },
                 ).to_json(),
             )

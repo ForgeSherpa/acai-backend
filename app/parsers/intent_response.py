@@ -4,6 +4,7 @@ from app.data import AskResponse
 from app.database import SessionLocal
 from sqlalchemy import select, func, Select, Numeric, extract
 from abc import ABC, abstractmethod
+from .data_empty_error import DataEmptyError
 
 
 class RangeFilter[T]:
@@ -291,7 +292,12 @@ class IntentResponse(AdvancedIntentResponse):
             result = db.scalars(stmt).all()
 
             if len(result) <= 0:
-                raise ValueError("Kosong pak datanya. Coba cek intent dan entity.")
+                raise DataEmptyError(
+                    entities=self.entities,
+                    year=self.year_filter,
+                    relation=self.relationships,
+                    range=self.range_filter,
+                )
 
             data = [self.get_list_map(row) for row in result]
 
@@ -325,7 +331,12 @@ class IntentResponse(AdvancedIntentResponse):
             result = db.execute(query).all()
 
             if len(result) <= 0 or result[0][0] is None:
-                raise ValueError("Kosong pak datanya. Coba cek intent dan entity.")
+                raise DataEmptyError(
+                    entities=self.entities,
+                    year=self.year_filter,
+                    relation=self.relationships,
+                    range=self.range_filter,
+                )
 
             data = self.get_aggregate_result(result)
 
