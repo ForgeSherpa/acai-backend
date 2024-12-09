@@ -1,8 +1,10 @@
+import functools
 import requests
 from .data import ModelResponse 
 import re
 from rapidfuzz import process
 from datetime import datetime
+import time
 
 INTENT_ACTION_MAP = {
     "ask_graduation_data": "action_show_graduation_data",
@@ -68,7 +70,8 @@ def extract_number_from_text(text: str) -> int:
         return int(match.group(0))
     return None
 
-def execute_action(action_name: str, tracker_data: dict) -> dict:
+@functools.lru_cache()
+def execute_action(action_name: str, tracker_data: dict, ttl_hash=None) -> dict:
     action_url = "http://localhost:5055/webhook" 
     headers = {"Content-Type": "application/json"}
 
@@ -124,7 +127,8 @@ def query_model(q: str) -> ModelResponse:
     }
 
     action_name = INTENT_ACTION_MAP.get(intent)
-    action_result = execute_action(action_name, tracker_data)
+    # cache for 1 hour
+    action_result = execute_action(action_name, tracker_data, ttl_hash=round(time.time() / 3600))
 
     print(f"query_model intent: {intent}")
     print(f"query_model entities: {entities}")
