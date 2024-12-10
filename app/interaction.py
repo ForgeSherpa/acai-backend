@@ -106,7 +106,7 @@ def execute_action(action_name: str, tracker_data: dict, ttl_hash=None) -> dict:
 def request_model(q: str, ttl_hash=None):
     res = requests.post(
         "http://localhost:5005/model/parse",
-        {"Content-Type": "application/json"},
+        headers={"Content-Type": "application/json"},
         json={"text": q},
     )
 
