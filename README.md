@@ -26,11 +26,13 @@ AcAI Backend is a sophisticated text prompt accreditation system designed to rev
 
 ### Prerequisites
 - Python 3.13+
-- [AcAI Core](https://github.com/ForgeSherpa/acai-core) / MockAPI
+- [AcAI Core](https://github.com/ForgeSherpa/acai-core)
 
-### Setting up MockAPI (optional)
+### ~~Setting up MockAPI (optional)~~
 
-Install [Mockoon](https://mockoon.com/download/), import `mock-api.json`. Run.
+> Deprecated: The MockAPI is not gonna work anymore. The maintenance of the MockAPI have been stopped in favor of the real API.
+
+~~Install [Mockoon](https://mockoon.com/download/), import `mock-api.json`. Run.~~
 
 ### Installation (Linux Only Guide)
 
