@@ -1,4 +1,3 @@
-import functools
 import requests
 from .data import ModelResponse
 import re
@@ -92,7 +91,6 @@ def extract_number_from_text(text: str) -> int:
     return None
 
 
-@functools.lru_cache()
 def execute_action(action_name: str, tracker_data: dict, ttl_hash=None) -> dict:
     action_url = "http://localhost:5055/webhook"
     headers = {"Content-Type": "application/json"}
@@ -102,7 +100,6 @@ def execute_action(action_name: str, tracker_data: dict, ttl_hash=None) -> dict:
     return response.json()
 
 
-@functools.lru_cache()
 def request_model(q: str, ttl_hash=None):
     res = requests.post(
         "http://localhost:5005/model/parse",
