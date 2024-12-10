@@ -1,8 +1,8 @@
 import requests
 from .data import ModelResponse
 import re
-from rapidfuzz import process
 from datetime import datetime
+from fuzzywuzzy import process
 import time
 
 INTENT_ACTION_MAP = {
