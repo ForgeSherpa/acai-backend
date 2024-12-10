@@ -46,7 +46,7 @@ class RelationshipFilter[T]:
 class AdvancedIntentResponse(ABC):
     name: str
     mode: str
-    group_by: str
+    group_by: str = None
     valid_mode: list[str] = []
     valid_entities: dict[str, str] = {}
     valid_groupby: list[str] = []
