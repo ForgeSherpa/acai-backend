@@ -17,6 +17,7 @@ class AskActivityData(IntentResponse):
     ]
     model = StudentActivity
     aggregate_field = "id"
+    group_by="date"
 
     def get_list_map(self, row):
         return {

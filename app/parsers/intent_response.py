@@ -124,16 +124,17 @@ class AdvancedIntentResponse(ABC):
         if self.mode not in self.valid_mode:
             raise ValueError(f"Invalid mode value, available values: {self.valid_mode}")
 
-        if group_by is not None and group_by not in self.valid_groupby:
-            raise ValueError(
-                f"Invalid group by value, available values: {self.valid_groupby}"
-            )
+        if group_by is not None:
+            if group_by not in self.valid_groupby:
+                raise ValueError(
+                    f"Invalid group by value, available values: {self.valid_groupby}"
+                )
+            self.group_by = group_by
 
-        self.group_by = group_by
 
         self.page = page
         self.meta = {
-            "group_by": group_by,
+            "group_by": self.group_by,
             "mode": self.mode,
             "entities": self.entities,
             "intent": self.name,

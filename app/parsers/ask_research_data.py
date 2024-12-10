@@ -19,6 +19,7 @@ class AskResearchData(IntentResponse):
     model = LecturerResearch
     aggregate_field = "id"
     major: str = None
+    group_by="publication_date"
 
     def get_list_map(self, row):
         return {

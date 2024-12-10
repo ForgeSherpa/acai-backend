@@ -26,6 +26,7 @@ class AskIpkData(IntentResponse):
     ]
     model = Student
     aggregate_field = "gpa"
+    group_by = "graduation_year"
 
     def run(self):
         if self.mode == "list":
