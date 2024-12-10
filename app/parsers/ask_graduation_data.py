@@ -24,6 +24,7 @@ class AskGraduationData(IntentResponse):
     ]
     model = Student
     aggregate_field = "id"
+    group_by = "graduation_year"
 
     def get_list_map(self, row):
         return {

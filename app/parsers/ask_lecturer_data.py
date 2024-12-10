@@ -8,10 +8,7 @@ class AskLecturerData(IntentResponse):
         "major": "major",
         "faculty": "faculty",
     }
-    valid_groupby = [
-        "year",
-        "faculty",
-    ]
+    valid_groupby = []
     model = Lecturer
     aggregate_field = "id"
 
