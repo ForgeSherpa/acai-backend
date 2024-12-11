@@ -14,11 +14,11 @@ INTENT_ACTION_MAP = {
 }
 
 faculty_patterns = [
-    "Bisnis dan Manajemen",
-    "Ilmu Pendidikan",
-    "Ilmu Komputer",
-    "Teknik Sipil dan Perencanaan",
-    "Hukum",
+    "Fakultas Bisnis dan Manajemen",
+    "Fakultas Ilmu Pendidikan",
+    "Fakultas Ilmu Komputer",
+    "Fakultas Teknik Sipil dan Perencanaan",
+    "Fakultas Hukum",
 ]
 major_patterns = [
     "Manajemen",
@@ -36,9 +36,28 @@ publication_type_patterns = ["Nasional non-sinta", "Scopus", "Sinta", "internati
 
 activity_level_patterns = ["internasional", "lokal", "nasional"]
 
+def convert_range_to_year_range(entities: dict) -> dict:
+    if "range" in entities:
+        year = entities.get("year")
+        
+        if year:
+            start_year = int(year)  
+            end_year = datetime.now().year
+            entities["year_range"] = f"{start_year} - {end_year}"
+            del entities["year"]
+    
+    return entities
+
 
 def calculate_period_range(period: str) -> str:
     current_year = datetime.now().year
+
+    match = re.search(r"(\d+)\s*(tahun terakhir|terakhir)", period)
+    if match:
+        num_years = int(match.group(1))
+        start_year = current_year - num_years
+        end_year = current_year
+        return f"{start_year} - {end_year}"
 
     if "tahun terakhir" in period:
         num_years = int(period.split()[0])
@@ -67,16 +86,6 @@ def extract_and_match_entities(entities: dict) -> dict:
 
     if "major" in entities:
         entities["major"] = word_match(entities["major"], major_patterns)
-
-    if "publication_type" in entities:
-        entities["publication_type"] = word_match(
-            entities["publication_type"], publication_type_patterns
-        )
-
-    if "activity_level" in entities:
-        entities["activity_level"] = word_match(
-            entities["activity_level"], activity_level_patterns
-        )
 
     return entities
 
@@ -116,7 +125,6 @@ def query_model(q: str) -> ModelResponse:
 
     intent = data["intent"]["name"]
     entities = {entity["entity"]: entity["value"] for entity in data["entities"]}
-
     entities = extract_and_match_entities(entities)
 
     period = entities.get("period")
@@ -125,20 +133,40 @@ def query_model(q: str) -> ModelResponse:
         if year_range:
             entities["year_range"] = year_range
             del entities["period"]
-    if "cohort" in entities:
-        entities["cohort"] = extract_number_from_text(entities["cohort"])
-    if "start" in entities:
-        entities["start"] = extract_number_from_text(entities["start"])
-    if "end" in entities:
-        entities["end"] = extract_number_from_text(entities["end"])
-    if "year" in entities:
-        entities["year"] = extract_number_from_text(entities["year"])
+    if "range" in entities:
+        entities = convert_range_to_year_range(entities)
+        del entities["range"]
+
+    for key in ["year","cohort", "start", "end"]:
+        if key in entities:
+            entities[key] = extract_number_from_text(entities[key])
+
     if "start" in entities and "end" in entities:
         entities["year_range"] = f"{entities['start']} - {entities['end']}"
     elif "start" in entities:
         entities["year_range"] = f"{entities['start']} - {entities['start']}"
     elif "end" in entities:
         entities["year_range"] = f"{entities['end']} - {entities['end']}"
+    if 'cohort' in entities and 'year' in entities:
+        entities['cohort'] = entities['year']
+        del entities['year']  
+    if intent == "ask_activity_data":
+        if "activity_level" in entities:
+            entities["activity_level"] = word_match(
+                entities["activity_level"], activity_level_patterns
+            )
+        if "publication_type" in entities:
+            entities["activity_level"] = entities["publication_type"]
+            del entities["publication_type"]
+
+    elif intent == "ask_research_data":
+        if "publication_type" in entities:
+            entities["publication_type"] = word_match(
+                entities["publication_type"], publication_type_patterns
+            )
+        if "activity_level" in entities:
+            entities["publication_type"] = entities["activity_level"]
+            del entities["activity_level"]
 
     tracker_data = {
         "sender_id": "user",
