@@ -9,6 +9,8 @@ from app.database import SessionLocal
 from app.settings import USE_SQLITE
 from app.models import Lecturer, LecturerResearch, Student, StudentActivity
 from app.datasets.schema_reader import preview_all, get_schema
+from app.data import ModelResponse
+from app.parsers.parser import Parser
 from sqlalchemy.orm import scoped_session
 from sqlalchemy import text
 import argparse
@@ -155,6 +157,25 @@ if __name__ == "__main__":
                         version_mismatch()
 
             subprocess.run(["fastapi", "dev", "main.py"])
+        case "_debug":
+            intent = str(input("Intent: "))
+            entities = str(input("Entities (strict format, only support: 'key=value,key2=start - end'): "))
+            mode = str(input("Mode: "))
+
+            parsed_entities = {}
+
+            for expr in entities.split(","):
+                key, value = expr.split("=")
+                parsed_entities[key] = value
+
+            result = Parser(
+                ModelResponse(
+                    intent=intent,
+                    entities=parsed_entities,
+                )
+            ).parse(mode)
+
+            print(result)
         case _:
             print(
                 "Invalid command: only migrate:schema, migrate, schema, and preview is allowed."

@@ -131,7 +131,6 @@ class AdvancedIntentResponse(ABC):
                 )
             self.group_by = group_by
 
-
         self.page = page
         self.meta = {
             "group_by": self.group_by,
@@ -295,7 +294,7 @@ class IntentResponse(AdvancedIntentResponse):
             if len(result) <= 0:
                 raise DataEmptyError(
                     meta=self.meta,
-                    raw_query=str(stmt),
+                    raw_query=str(stmt.compile(compile_kwargs={"literal_binds": True})),
                 )
 
             data = [self.get_list_map(row) for row in result]
@@ -330,7 +329,12 @@ class IntentResponse(AdvancedIntentResponse):
             result = db.execute(query).all()
 
             if len(result) <= 0 or result[0][0] is None:
-                raise DataEmptyError(meta=self.meta, raw_query=str(query))
+                raise DataEmptyError(
+                    meta=self.meta,
+                    raw_query=str(
+                        query.compile(compile_kwargs={"literal_binds": True})
+                    ),
+                )
 
             data = self.get_aggregate_result(result)
 
