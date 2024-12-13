@@ -7,7 +7,17 @@ ENV_PATH = os.path.join(ROOT_PATH, ".env")
 
 load_dotenv(ENV_PATH, verbose=True)
 
+# Paksa SQLite off karena entah napa masih ada aja yang pake SQLITE.
+# Giliran error, malah salahin project error, padahal udah ada tulisan sqlite not tested.
+# Maka dari itu saya hapusin aja!
 USE_SQLITE = os.getenv("USE_SQLITE", "false").lower() == "true"
+
+if USE_SQLITE:
+    print("Warning! Usage of SQLite is disabled... due to some person keep using it")
+    print("And complaining once error, therefore I will disable it entirely!")
+
+
+USE_SQLITE = False
 
 MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
 MYSQL_USER = os.getenv("MYSQL_USER", "root")
