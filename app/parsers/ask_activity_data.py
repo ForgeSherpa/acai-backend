@@ -9,6 +9,7 @@ class AskActivityData(IntentResponse):
         "year_range": "range:date",
         "major": "student__major",
         "faculty": "student__faculty",
+        "cohort": "student__generation",
         "activity_level": "type",
     }
     valid_groupby = [
@@ -29,5 +30,6 @@ class AskActivityData(IntentResponse):
                 "name": row.student.name,
                 "major": row.student.major,
                 "faculty": row.student.faculty,
+                "cohort": row.student.generation,
             }
         }
