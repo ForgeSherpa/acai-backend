@@ -51,25 +51,15 @@ pip install -r requirements.txt
 python cli.py serve
 ```
 
-### SQLite Setup
-
-```bash
-cp .env.example .env
-python cli.py migrate:schema
-python cli.py migrate
-```
-
 ### MySQL Setup
 
 ```bash
 cp .env.example .env
-# Set USE_SQLITE to true in the ENV
-sed -i 's/\(USE_SQLITE=\)true/\1false/' .env
 # Set the MySQL credentials or just use nano/vim.
-# sed -i 's/\(MYSQL_USER=\)root/\1your_user/' .env
-# sed -i 's/\(MYSQL_PASSWORD=\)/\1your_password/' .env
-# sed -i 's/\(MYSQL_HOST=\)localhost/\1your_host/' .env
-# sed -i 's/\(MYSQL_DB=\)acai/\1your_database/' .env
+sed -i 's/\(MYSQL_USER=\)root/\1your_user/' .env
+sed -i 's/\(MYSQL_PASSWORD=\)/\1your_password/' .env
+sed -i 's/\(MYSQL_HOST=\)localhost/\1your_host/' .env
+sed -i 's/\(MYSQL_DB=\)acai/\1your_database/' .env
 python cli.py migrate:schema
 python cli.py migrate
 ```
